@@ -22,6 +22,13 @@ namespace IsThisOn.Tests.Config
             }
 
             [Fact]
+            public void LoadsProviderDataConfig()
+            {
+                this._subject.ProviderData
+                    .Should().Equal("SomeProviderData");
+            }
+
+            [Fact]
             public void LoadsSwitchesFromConfig()
             {
                 this._subject.Switches.Count

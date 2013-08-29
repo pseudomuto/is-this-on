@@ -10,15 +10,7 @@ namespace IsThisOn.Tests
 {
     public class SwitchBoard
     {
-        public abstract class BaseTest
-        {
-            protected BaseTest()
-            {
-                IsThisOn.SwitchBoard.InitializeSwitches();
-            }
-        }
-
-        public class InitializeSwitches : BaseTest
+        public class ReloadSwitches
         {
             [Fact]
             public void LoadsSwitchesFromProvider()
@@ -30,7 +22,7 @@ namespace IsThisOn.Tests
 
         public class IsOn
         {
-            public class WhenSwitchExists : BaseTest
+            public class WhenSwitchExists
             {
                 [Fact]
                 public void EvaluatesSwitch()
@@ -40,7 +32,7 @@ namespace IsThisOn.Tests
                 }
             }
 
-            public class WhenSwitchDoesntExist : BaseTest
+            public class WhenSwitchDoesntExist
             {
                 [Fact]
                 public void DefaultsToFalse()

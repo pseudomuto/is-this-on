@@ -12,23 +12,30 @@ namespace IsThisOn
             {
                 var type = Type.GetType(SwitchBoardConfig.Instance.Provider);
                 return Activator.CreateInstance(type) as ConfigSwitchProvider;
-            });
+            }, true);
 
-        private static IEnumerable<ISwitch> switches;
+        private static Lazy<IEnumerable<ISwitch>> switches =
+            new Lazy<IEnumerable<ISwitch>>(() =>
+            {
+                return provider.Value.GetSwitches();
+            }, true);
 
         public static int SwitchCount
         {
-            get { return switches.Count(); }
+            get { return switches.Value.Count(); }
         }
 
-        public static void InitializeSwitches()
+        public static void ReloadSwitches()
         {
-            switches = provider.Value.GetSwitches();
+            switches = new Lazy<IEnumerable<ISwitch>>(() =>
+            {
+                return provider.Value.GetSwitches();
+            }, true);
         }
 
         public static bool IsOn(string name)
         {
-            var thisSwitch = switches.FirstOrDefault(s => s.Name.Equals(
+            var thisSwitch = switches.Value.FirstOrDefault(s => s.Name.Equals(
                     name, 
                     StringComparison.OrdinalIgnoreCase
                 ));
