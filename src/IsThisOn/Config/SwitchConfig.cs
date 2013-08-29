@@ -12,7 +12,7 @@ namespace IsThisOn
         private const string TYPE_PROP = "type";
         private const string VALUE_PROP = "value";
 
-        [ConfigurationProperty(NAME_PROP)]
+        [ConfigurationProperty(NAME_PROP, IsKey = true)]
         public string Name
         {
             get { return this[NAME_PROP] as string; }
