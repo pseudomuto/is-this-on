@@ -54,6 +54,7 @@
     <Compile Include="SwitchBoard.cs" />
     <Compile Include="Switches\BoolSwitch.cs" />
     <Compile Include="Switches\ISwitch.cs" />
+    <Compile Include="Switches\PercentageSwitch.cs" />
     <Compile Include="Switches\SwitchFactory.cs" />
   </ItemGroup>
   <ItemGroup />
