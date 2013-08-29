@@ -17,14 +17,6 @@ namespace IsThisOn
             }
         }
 
-        public SwitchConfig this[string name]
-        {
-            get
-            {
-                return this.BaseGet(name) as SwitchConfig;
-            }
-        }
-
         protected override ConfigurationElement CreateNewElement()
         {
             return new SwitchConfig();
