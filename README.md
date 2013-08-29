@@ -33,24 +33,23 @@ Setup the `SwitchBoard` in your web/app config file:
 
 Then in your app, ask the SwitchBoard if a feature is on:
 
-  if (SwitchBoard.IsOn("BoolSwitch")) {
-    // do the new thing...
-  } else {
-    // do the old thing...
-  }
+    if (SwitchBoard.IsOn("BoolSwitch")) {
+        // do the new thing...
+    } else {
+        // do the old thing...
+    }
 
 Or, you could (maybe should?) do both things:
 
-  if (SwitchBoard.IsOn("BoolSwitch")) {
-    // do the new thing...
-  }
-  
-  // do the old thing...
+    if (SwitchBoard.IsOn("BoolSwitch")) {
+        // do the new thing...
+    }
+    
+    // do the old thing...
 
 ## Upcoming
 
-1. `JsonConfigSwitchProvider` - allowing apps to pull in switch details
-2. Many more switch types
+1. Many more switch types
 
 ## Contributing
 
