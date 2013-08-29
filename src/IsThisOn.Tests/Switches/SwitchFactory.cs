@@ -34,7 +34,7 @@ namespace IsThisOn.Tests.Switches
                 {
                     var featureSwitch = IsThisOn.SwitchFactory.CreateSwitch(
                             "testSwitch",
-                            typeof(BoolSwitch), 
+                            typeof(IsThisOn.BoolSwitch), 
                             true
                         );
 
