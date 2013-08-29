@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <description>$description$</description>
+    <language>en-US</language>
+    <projectUrl>https://github.com/pseudomuto/is-this-on</projectUrl>
+    <licenseUrl>https://github.com/pseudomuto/is-this-on/raw/master/LICENSE</licenseUrl>    
+    <tags>UTILITIES DEVOPS DEPLOYMENT</tags>
+    <releaseNotes><![CDATA[
+            For full release notes see https://github.com/pseudomuto/is-this-on/blob/master/releasenotes.md
+            ]]></releaseNotes>
+  </metadata>
+</package>
