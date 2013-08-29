@@ -10,6 +10,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.1.0.*")]
-[assembly: AssemblyInformationalVersion("0.1.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyVersion(GlobalAssemblyInfo.Version + ".*")]
+[assembly: AssemblyInformationalVersion(GlobalAssemblyInfo.Version)]
+[assembly: AssemblyFileVersion(GlobalAssemblyInfo.Version + ".0")]
+
+class GlobalAssemblyInfo
+{
+    public const string Version = "0.1.0";
+}
