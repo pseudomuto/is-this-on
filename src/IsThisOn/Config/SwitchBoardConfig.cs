@@ -10,6 +10,7 @@ namespace IsThisOn
     {
         private const string SECTION_NAME = "switchboard";
         private const string PROVIDER_PROP = "provider";
+        private const string PROVIDER_DATA_PROP = "providerData";
         private const string SWITCHES_PROP = "features";
 
         private static Lazy<SwitchBoardConfig> _instance = new Lazy<SwitchBoardConfig>(() =>
@@ -24,6 +25,13 @@ namespace IsThisOn
         {
             get { return this[PROVIDER_PROP] as string; }
             set { this[PROVIDER_PROP] = value; }
+        }
+
+        [ConfigurationProperty(PROVIDER_DATA_PROP)]
+        public string ProviderData
+        {
+            get { return this[PROVIDER_DATA_PROP] as string; }
+            set { this[PROVIDER_DATA_PROP] = value; }
         }
 
         [ConfigurationProperty(SWITCHES_PROP)]
