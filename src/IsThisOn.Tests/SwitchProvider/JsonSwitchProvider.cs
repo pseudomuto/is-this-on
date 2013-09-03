@@ -8,7 +8,7 @@ using Xunit;
 
 using Should.Fluent;
 
-namespace IsThisOn.Tests.Provider
+namespace IsThisOn.Tests.SwitchProvider
 {
     public class JsonSwitchProvider
     {

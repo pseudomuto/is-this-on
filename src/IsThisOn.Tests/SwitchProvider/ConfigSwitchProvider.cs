@@ -8,7 +8,7 @@ using Xunit;
 
 using Should.Fluent;
 
-namespace IsThisOn.Tests.Provider
+namespace IsThisOn.Tests.SwitchProvider
 {
     public class ConfigSwitchProvider
     {
@@ -32,6 +32,16 @@ namespace IsThisOn.Tests.Provider
                 );
 
                 sw.IsActive().Should().Be.True();
+            }
+
+            [Fact]
+            public void SetsCacheDurationValueCorrectly()
+            {
+                var sw = this._subject.GetSwitches().First(
+                    s => s.Name.Equals("boolswitch", StringComparison.OrdinalIgnoreCase)
+                );
+
+                sw.CacheDuration.Should().Equal(StorageDuration.Long);
             }
         }
     }

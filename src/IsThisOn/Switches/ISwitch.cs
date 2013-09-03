@@ -11,6 +11,11 @@ namespace IsThisOn
     public interface ISwitch
     {
         /// <summary>
+        /// The length of time to cache the result for
+        /// </summary>
+        StorageDuration CacheDuration { get; set; }
+
+        /// <summary>
         /// The name of the switch
         /// </summary>
         string Name { get; set; }

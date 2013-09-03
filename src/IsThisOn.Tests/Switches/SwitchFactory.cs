@@ -14,31 +14,46 @@ namespace IsThisOn.Tests.Switches
         {
             public class WhenCreatedWithATypeName
             {
-                [Fact]
-                public void CreatesSwitch()
-                {
-                    var featureSwitch = IsThisOn.SwitchFactory.CreateSwitch(
+                private ISwitch _subject = IsThisOn.SwitchFactory.CreateSwitch(
                             "testSwitch",
                             "IsThisOn.BoolSwitch, IsThisOn",
                             true
                         );
 
-                    featureSwitch.Should().Not.Be.Null();
+                [Fact]
+                public void CreatesSwitch()
+                {
+                    this._subject.Should().Not.Be.Null();
+                }
+
+                [Fact]
+                public void SetsCacheDuration()
+                {
+                    this._subject.CacheDuration
+                        .Should().Equal(StorageDuration.None);
                 }
             }
 
             public class WhenCreatedWithAType
             {
+                private ISwitch _subject = IsThisOn.SwitchFactory.CreateSwitch(
+                            "testSwitch",
+                            typeof(IsThisOn.BoolSwitch),
+                            true,
+                            StorageDuration.Long
+                        );
+
                 [Fact]
                 public void CreatesSwitch()
                 {
-                    var featureSwitch = IsThisOn.SwitchFactory.CreateSwitch(
-                            "testSwitch",
-                            typeof(IsThisOn.BoolSwitch), 
-                            true
-                        );
+                    this._subject.Should().Not.Be.Null();                    
+                }
 
-                    featureSwitch.Should().Not.Be.Null();                    
+                [Fact]
+                public void SetsCacheDuration()
+                {
+                    this._subject.CacheDuration
+                        .Should().Equal(StorageDuration.Long);
                 }
             }
         }
