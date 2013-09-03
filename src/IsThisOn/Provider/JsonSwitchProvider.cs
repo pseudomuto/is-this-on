@@ -7,8 +7,17 @@ using System.Text;
 
 namespace IsThisOn
 {
+    /// <summary>
+    /// An <see cref="ISwitchProvider"/> that reads in switch configuration from a 
+    /// JSON endpoint
+    /// </summary>
     public class JsonSwitchProvider : ISwitchProvider
     {
+        /// <summary>
+        /// Loads switches from the URI supplied in 
+        /// <see cref="SwitchBoardConfig.Instance.ProviderData"/>
+        /// </summary>
+        /// <returns><see cref="ISwitch"/> objects for each defined switch</returns>
         public IEnumerable<ISwitch> GetSwitches()
         {
             var endpoint = this.GetUri();

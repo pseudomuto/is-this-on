@@ -6,6 +6,9 @@ using System.Text;
 
 namespace IsThisOn
 {
+    /// <summary>
+    /// The main configuration section for IsThisOn
+    /// </summary>
     public class SwitchBoardConfig : ConfigurationSection
     {
         private const string SECTION_NAME = "switchboard";
@@ -18,8 +21,14 @@ namespace IsThisOn
             return ConfigurationManager.GetSection(SECTION_NAME) as SwitchBoardConfig;
         });
 
+        /// <summary>
+        /// The one and only config instance
+        /// </summary>
         public static SwitchBoardConfig Instance { get { return _instance.Value;  } }
 
+        /// <summary>
+        /// The full type name of the <see cref="ISwitchProvider"/> to be used
+        /// </summary>
         [ConfigurationProperty(PROVIDER_PROP)]
         public string Provider
         {
@@ -27,6 +36,9 @@ namespace IsThisOn
             set { this[PROVIDER_PROP] = value; }
         }
 
+        /// <summary>
+        /// An optional string to be used by <see cref="Provider"/>
+        /// </summary>
         [ConfigurationProperty(PROVIDER_DATA_PROP)]
         public string ProviderData
         {
@@ -34,6 +46,9 @@ namespace IsThisOn
             set { this[PROVIDER_DATA_PROP] = value; }
         }
 
+        /// <summary>
+        /// The switch definitions to be used if using <see cref="ConfigSwitchProvider"/>
+        /// </summary>
         [ConfigurationProperty(SWITCHES_PROP)]
         public SwitchConfigCollection Switches
         {
