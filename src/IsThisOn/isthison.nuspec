@@ -2,16 +2,20 @@
 <package>
   <metadata>
     <id>$id$</id>
+    <title>$id$</title>
     <version>$version$</version>
     <authors>$author$</authors>
     <owners>$author$</owners>
     <description>$description$</description>
+    <summary>$description$</summary>
+    <copyright>pseudomuto 2013</copyright>
     <language>en-US</language>
-    <projectUrl>https://github.com/pseudomuto/is-this-on</projectUrl>
+    <projectUrl>http://pseudomuto.com/is-this-on/</projectUrl>
     <licenseUrl>https://github.com/pseudomuto/is-this-on/raw/master/LICENSE</licenseUrl>    
-    <tags>UTILITIES DEVOPS DEPLOYMENT</tags>
-    <releaseNotes><![CDATA[
-            For full release notes see https://github.com/pseudomuto/is-this-on/blob/master/releasenotes.md
+    <tags>UTILITIES DEPLOYMENT CONTINUOUS_DELIVERY CONTINUOUS_DEPLOYMENT AB_TESTING</tags>
+    <releaseNotes>
+      <![CDATA[
+            For full release notes see the website http://pseudomuto.com/is-this-on/
             ]]></releaseNotes>
   </metadata>
 </package>

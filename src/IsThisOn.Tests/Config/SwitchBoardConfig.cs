@@ -18,14 +18,21 @@ namespace IsThisOn.Tests.Config
             public void LoadsProviderFromConfig()
             {
                 this._subject.Provider
-                    .Should().Equal("IsThisOn.ConfigSwitchProvider, IsThisOn");
+                    .Should().Not.Be.NullOrEmpty();
+            }
+
+            [Fact]
+            public void LoadsStorageProviderFromConfig()
+            {
+                this._subject.StorageProvider
+                    .Should().Not.Be.NullOrEmpty();
             }
 
             [Fact]
             public void LoadsProviderDataConfig()
             {
                 this._subject.ProviderData
-                    .Should().Equal("SomeProviderData");
+                    .Should().Not.Be.NullOrEmpty();
             }
 
             [Fact]

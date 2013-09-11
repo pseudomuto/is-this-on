@@ -8,7 +8,7 @@ using Xunit;
 
 using Should.Fluent;
 
-namespace IsThisOn.Tests.Provider
+namespace IsThisOn.Tests.SwitchProvider
 {
     public class JsonSwitchProvider
     {
@@ -20,7 +20,7 @@ namespace IsThisOn.Tests.Provider
             {
                 var mock = new Mock<IsThisOn.JsonSwitchProvider>();
                 mock.CallBase = true;
-                mock.Setup(m => m.GetUri()).Returns(new Uri("http://example.com/switches.json"));
+                
                 mock.Setup(m => m.DownloadJson(It.IsAny<Uri>()))
                     .Returns(() =>
                     {

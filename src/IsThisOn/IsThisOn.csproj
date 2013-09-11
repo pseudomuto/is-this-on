@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,9 +52,12 @@
     <Compile Include="Config\SwitchConfig.cs" />
     <Compile Include="Config\SwitchConfigCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\ConfigSwitchProvider.cs" />
-    <Compile Include="Provider\ISwitchProvider.cs" />
-    <Compile Include="Provider\JsonSwitchProvider.cs" />
+    <Compile Include="StorageProvider\CookieStorageProvider.cs" />
+    <Compile Include="StorageProvider\IStorageProvider.cs" />
+    <Compile Include="StorageProvider\NullStorageProvider.cs" />
+    <Compile Include="SwitchProvider\ConfigSwitchProvider.cs" />
+    <Compile Include="SwitchProvider\ISwitchProvider.cs" />
+    <Compile Include="SwitchProvider\JsonSwitchProvider.cs" />
     <Compile Include="SimpleJson.cs" />
     <Compile Include="SwitchBoard.cs" />
     <Compile Include="Switches\BoolSwitch.cs" />

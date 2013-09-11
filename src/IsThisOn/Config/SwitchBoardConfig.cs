@@ -13,6 +13,7 @@ namespace IsThisOn
     {
         private const string SECTION_NAME = "switchboard";
         private const string PROVIDER_PROP = "provider";
+        private const string STORAGE_PROVIDER_PROP = "storageProvider";
         private const string PROVIDER_DATA_PROP = "providerData";
         private const string SWITCHES_PROP = "features";
 
@@ -34,6 +35,16 @@ namespace IsThisOn
         {
             get { return this[PROVIDER_PROP] as string; }
             set { this[PROVIDER_PROP] = value; }
+        }
+
+        /// <summary>
+        /// The full type name of the <see cref="IStorageProvider"/> to be used
+        /// </summary>
+        [ConfigurationProperty(STORAGE_PROVIDER_PROP)]
+        public string StorageProvider
+        {
+            get { return this[STORAGE_PROVIDER_PROP] as string; }
+            set { this[STORAGE_PROVIDER_PROP] = value; }
         }
 
         /// <summary>

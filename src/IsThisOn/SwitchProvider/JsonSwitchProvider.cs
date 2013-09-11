@@ -51,14 +51,14 @@ namespace IsThisOn
 
         class Switches
         {
-            public IEnumerable<Switch> features;
+            public IEnumerable<Switch> features = null;
         }
 
         class Switch
         {
-            public string name;
-            public string type;
-            public string value;
+            public string name = null;
+            public string type = null;
+            public string value = null;
         }
     }
 }
