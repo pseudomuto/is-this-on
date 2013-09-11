@@ -15,6 +15,11 @@ namespace IsThisOn
         private Random _random = new Random();
 
         /// <summary>
+        /// The length of time to cache the result for
+        /// </summary>
+        public StorageDuration CacheDuration { get; set; }
+
+        /// <summary>
         /// The name of the switch
         /// </summary>
         public string Name { get; set; }

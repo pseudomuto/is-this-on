@@ -19,11 +19,12 @@ namespace IsThisOn
             for (int i = 0; i < SwitchBoardConfig.Instance.Switches.Count; i++)
             {
                 var currentSwitch = SwitchBoardConfig.Instance.Switches[i];
-
+                
                 yield return SwitchFactory.CreateSwitch(
                     currentSwitch.Name,
                     currentSwitch.Type,
-                    currentSwitch.Value
+                    currentSwitch.Value,
+                    currentSwitch.CacheDuration
                 );
             }
         }

@@ -10,17 +10,24 @@ namespace IsThisOn
     /// </summary>
     public sealed class SwitchBoard
     {
-        private static Lazy<ConfigSwitchProvider> provider =
+        private static Lazy<ConfigSwitchProvider> switchProvider =
             new Lazy<ConfigSwitchProvider>(() =>
             {
                 var type = Type.GetType(SwitchBoardConfig.Instance.Provider);
                 return Activator.CreateInstance(type) as ConfigSwitchProvider;
             }, true);
 
+        private static Lazy<IStorageProvider> storageProvider =
+            new Lazy<IStorageProvider>(() =>
+            {
+                var type = Type.GetType(SwitchBoardConfig.Instance.StorageProvider);
+                return Activator.CreateInstance(type) as IStorageProvider;
+            }, true);
+
         private static Lazy<IEnumerable<ISwitch>> switches =
             new Lazy<IEnumerable<ISwitch>>(() =>
             {
-                return provider.Value.GetSwitches();
+                return switchProvider.Value.GetSwitches();
             }, true);
 
         /// <summary>
@@ -38,12 +45,14 @@ namespace IsThisOn
         {
             switches = new Lazy<IEnumerable<ISwitch>>(() =>
             {
-                return provider.Value.GetSwitches();
+                return switchProvider.Value.GetSwitches();
             }, true);
+
+            storageProvider.Value.ClearState();
         }
 
         /// <summary>
-        /// Gets a valid indicating whether a switch is on
+        /// Gets a value indicating whether a switch is on
         /// </summary>
         /// <param name="name">The name of the switch</param>
         /// <returns>True is the feature is found and on, otherwise false</returns>
@@ -54,9 +63,47 @@ namespace IsThisOn
                     StringComparison.OrdinalIgnoreCase
                 ));
 
-            return thisSwitch == null ? 
-                false : 
-                thisSwitch.IsActive();
+            // stop here when not found
+            if (thisSwitch == null) return false;
+
+            if (thisSwitch.CacheDuration != StorageDuration.None)
+            {
+                var storedState = storageProvider.Value.GetState(name);
+                if (storedState.HasValue) return storedState.Value;
+            }
+
+            var state = thisSwitch.IsActive();
+
+            StoreSwitchState(thisSwitch, state);
+
+            return state;
+        }
+
+        private static void StoreSwitchState(ISwitch thisSwitch, bool state)
+        {
+            if (thisSwitch.CacheDuration != StorageDuration.None)
+            {
+                storageProvider.Value.StoreState(
+                        thisSwitch.Name,
+                        state,
+                        thisSwitch.CacheDuration
+                    );
+            }
         }        
+
+        internal static void SetStorageProvider(IStorageProvider someStorageProvider)
+        {
+            storageProvider = new Lazy<IStorageProvider>(() => 
+            {
+                var type = Type.GetType(SwitchBoardConfig.Instance.StorageProvider);
+                
+                return someStorageProvider == null ?
+                    Activator.CreateInstance(type) as IStorageProvider :
+                    someStorageProvider;
+            });
+
+            // preload
+            var value = storageProvider.Value;
+        }
     }
 }
