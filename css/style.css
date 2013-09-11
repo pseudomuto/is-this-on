@@ -2,3 +2,5 @@
 html, body {
     margin: 20px;
 }
+
+.nav a.active { color: #fff;}
