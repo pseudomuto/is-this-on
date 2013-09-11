@@ -48,6 +48,81 @@ namespace IsThisOn.Tests.StorageProvider
                 this._subject.GetState("my cookIe")
                     .Should().Not.Be.True();
             }
+
+            public class WhenStorageDurationIsNone : CookieStorageProvider
+            {
+                [Fact]
+                public void DoesNotStoreTheResult()
+                {
+                    this._defaultCookies.Add(new HttpCookie("itofs_my_cookie", true.ToString()));
+                    this._subject.StoreState("MY COOKIE", true, StorageDuration.None);
+
+                    this._outputCookies["itofs_my_cookie"]
+                        .Should().Be.Null();
+                }
+
+                [Fact]
+                public void RemovesExistingValue()
+                {
+                    this._subject.StoreState("MY COOKIE", true, StorageDuration.Short);
+                    this._subject.StoreState("MY COOKIE", false, StorageDuration.None);
+
+                    this._outputCookies["itofs_my_cookie"]
+                        .Should().Be.Null();
+                }
+            }
+
+            public class WhenStorageDurationIsShort : CookieStorageProvider
+            {
+                [Fact]
+                public void StoresTheResultForCurrentSession()
+                {
+                    this._subject.StoreState("MY COOKIE", false, StorageDuration.Short);
+                    
+                    var result = this._outputCookies["itofs_my_cookie"];
+                    result.Expires
+                        .Should().Equal(default(DateTime));
+                }
+            }
+
+            public class WhenStorageDurationIsMedium : CookieStorageProvider
+            {
+                [Fact]
+                public void StoresTheResultForCurrentSession()
+                {
+                    this._subject.StoreState("MY COOKIE", false, StorageDuration.Medium);
+
+                    var result = this._outputCookies["itofs_my_cookie"];
+                    result.Expires.Date
+                        .Should().Equal(DateTime.Now.AddDays(1).Date);
+                }
+            }
+
+            public class WhenStorageDurationIsLong : CookieStorageProvider
+            {
+                [Fact]
+                public void StoresTheResultForCurrentSession()
+                {
+                    this._subject.StoreState("MY COOKIE", false, StorageDuration.Long);
+
+                    var result = this._outputCookies["itofs_my_cookie"];
+                    result.Expires.Date
+                        .Should().Equal(DateTime.Now.AddDays(14).Date);
+                }
+            }
+
+            public class WhenStorageDurationIsForEver : CookieStorageProvider
+            {
+                [Fact]
+                public void StoresTheResultForCurrentSession()
+                {
+                    this._subject.StoreState("MY COOKIE", false, StorageDuration.ForEver);
+
+                    var result = this._outputCookies["itofs_my_cookie"];
+                    result.Expires.Date
+                        .Should().Equal(DateTime.Now.AddYears(1).Date);
+                }
+            }
         }
 
         public class GetState : CookieStorageProvider

@@ -35,10 +35,14 @@ namespace IsThisOn
             var key = MakeKey(name);
             this.OutgoingCookies.Remove(key);
 
-            var cookie = new HttpCookie(key);
-            cookie.Value = state.ToString();
+            if (duration != StorageDuration.None)
+            {
+                var cookie = new HttpCookie(key);
+                cookie.Value = state.ToString();
 
-            this.OutgoingCookies.Add(cookie);
+                this.SetCookieExpiration(duration, cookie);
+                this.OutgoingCookies.Add(cookie);
+            }
         }
 
         /// <summary>
@@ -104,6 +108,22 @@ namespace IsThisOn
         protected bool KeyDefinedSinceLastRequest(string name)
         {
             return this.OutgoingCookies.AllKeys.Contains(name);
+        }
+
+        protected virtual void SetCookieExpiration(StorageDuration duration, HttpCookie cookie)
+        {
+            switch (duration)
+            {
+                case StorageDuration.Medium:
+                    cookie.Expires = DateTime.Now.AddDays(1);
+                    break;
+                case StorageDuration.Long:
+                    cookie.Expires = DateTime.Now.AddDays(14);
+                    break;
+                case StorageDuration.ForEver:
+                    cookie.Expires = DateTime.Now.AddYears(1);
+                    break;
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace IsThisOn.Tests.SwitchProvider
             {
                 var mock = new Mock<IsThisOn.JsonSwitchProvider>();
                 mock.CallBase = true;
-                mock.Setup(m => m.GetUri()).Returns(new Uri("http://example.com/switches.json"));
+                
                 mock.Setup(m => m.DownloadJson(It.IsAny<Uri>()))
                     .Returns(() =>
                     {
