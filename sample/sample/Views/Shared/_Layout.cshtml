@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+
+@helper CommonLinks() {
+    <li><a href="/"><i class="icon-home"></i> Overview</a></li>
+    <li><a href="http://pseudomuto.com/is-this-on/"><i class="icon-globe"></i> Project Site</a></li>
+    <li><a href="https://github.com/pseudomuto/is-this-on"><i class="icon-github"></i> GitHub Repo</a></li>                    
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title | Is This On?</title>
+    <link rel="stylesheet" href="/content/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="/content/bootstrap/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="/content/font-awesome.min.css" />
+    <link rel="stylesheet" href="/content/global.css" />
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Is This On? Sample App</a>
+            </div>
+
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    @CommonLinks()
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">
+                            <i class="icon-refresh"></i> Reload Switches
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row row-offcanvas row-offcanvas-right">
+            <div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+                <div class="well sidebar-nav">
+                    <ul class="nav">
+                        <li>General</li>
+                        @CommonLinks()
+                        <li>Examples</li>
+                        
+                    </ul>                    
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-9">
+                @RenderBody()
+            </div>
+        </div>    
+    </div>
+    
+
+    <script src="/scripts/jquery-1.9.1.min.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+</body>
+</html>

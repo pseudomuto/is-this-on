@@ -123,5 +123,17 @@ namespace IsThisOn.Tests
                 }
             }
         }
+
+        public class GetSwitches
+        {
+            [Fact]
+            public void ReturnsSwitches()
+            {
+                var values = IsThisOn.SwitchBoard.GetSwitches();
+
+                values.Count()
+                    .Should().Equal(IsThisOn.SwitchBoard.SwitchCount);
+            }
+        }
     }
 }

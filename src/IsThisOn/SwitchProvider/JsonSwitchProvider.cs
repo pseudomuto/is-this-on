@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace IsThisOn
 {
@@ -13,6 +15,11 @@ namespace IsThisOn
     /// </summary>
     public class JsonSwitchProvider : ISwitchProvider
     {
+        private static Regex RELATIVE_URI = new Regex(
+                @"^(~|\/)", 
+                RegexOptions.IgnoreCase | RegexOptions.Compiled
+            );
+
         /// <summary>
         /// Loads switches from the URI supplied in 
         /// <see cref="SwitchBoardConfig.Instance.ProviderData"/>
@@ -37,7 +44,21 @@ namespace IsThisOn
 
         protected internal virtual Uri GetUri()
         {
-            return new Uri(SwitchBoardConfig.Instance.ProviderData);
+            var path = SwitchBoardConfig.Instance.ProviderData.TrimStart('~');
+
+            if (path.StartsWith("/"))
+            {
+                var url = HttpContext.Current.Request.Url;
+
+                path = string.Format(
+                        "{0}://{1}/{2}",
+                        url.Scheme,
+                        url.Authority,
+                        path.TrimStart('/')
+                    );
+            }
+
+            return new Uri(path);
         }
 
         protected internal virtual string DownloadJson(Uri endpoint)

@@ -10,11 +10,11 @@ namespace IsThisOn
     /// </summary>
     public sealed class SwitchBoard
     {
-        private static Lazy<ConfigSwitchProvider> switchProvider =
-            new Lazy<ConfigSwitchProvider>(() =>
+        private static Lazy<ISwitchProvider> switchProvider =
+            new Lazy<ISwitchProvider>(() =>
             {
                 var type = Type.GetType(SwitchBoardConfig.Instance.Provider);
-                return Activator.CreateInstance(type) as ConfigSwitchProvider;
+                return Activator.CreateInstance(type) as ISwitchProvider;
             }, true);
 
         private static Lazy<IStorageProvider> storageProvider =
@@ -36,6 +36,15 @@ namespace IsThisOn
         public static int SwitchCount
         {
             get { return switches.Value.Count(); }
+        }
+
+        /// <summary>
+        /// Gets all of the defined switches
+        /// </summary>
+        /// <returns>An <code>IEnumerable</code> of all defined switches</returns>
+        public static IEnumerable<ISwitch> GetSwitches()
+        {
+            return switches.Value;
         }
 
         /// <summary>

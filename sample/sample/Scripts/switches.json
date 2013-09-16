@@ -1,0 +1,6 @@
+﻿{
+  "features": [
+    { "name": "BoolOn", "type": "IsThisOn.BoolSwitch, IsThisOn", "value": "true" },
+    { "name": "BoolOff", "type": "IsThisOn.BoolSwitch, IsThisOn", "value": "false" }
+  ]
+}
