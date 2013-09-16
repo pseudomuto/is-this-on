@@ -17,7 +17,7 @@
 // <website>https://github.com/facebook-csharp-sdk/simple-json</website>
 //-----------------------------------------------------------------------
 
-// VERSION: 0.26.0
+// VERSION: 0.28.0
 
 // NOTE: uncomment the following line to make SimpleJson class internal.
 //#define SIMPLE_JSON_INTERNAL
@@ -76,7 +76,6 @@ namespace IsThisOn
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -111,7 +110,6 @@ namespace IsThisOn
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -493,7 +491,6 @@ namespace IsThisOn
     /// All numbers are parsed to doubles.
     /// </summary>
     [GeneratedCode("simple-json", "1.0.0")]
-    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1186,7 +1183,7 @@ namespace IsThisOn
 #endif
     }
     
-    [GeneratedCode("simple-json", "1.0.0")]    
+    [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1200,7 +1197,6 @@ namespace IsThisOn
     }
 
     [GeneratedCode("simple-json", "1.0.0")]
-    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1399,9 +1395,8 @@ namespace IsThisOn
                         }
                         else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || ReflectionUtils.IsAssignableFrom(typeof(IList), type))
                         {
-                            Type innerType = ReflectionUtils.GetGenericTypeArguments(type)[0];
-                            Type genericType = typeof(List<>).MakeGenericType(innerType);
-                            list = (IList)ConstructorCache[genericType](jsonObject.Count);
+                            Type innerType = ReflectionUtils.GetGenericListElementType(type);
+                            list = (IList)(ConstructorCache[type] ?? ConstructorCache[typeof(List<>).MakeGenericType(innerType)])(jsonObject.Count);
                             foreach (object o in jsonObject)
                                 list.Add(DeserializeObject(o, innerType));
                         }
@@ -1549,7 +1544,6 @@ namespace IsThisOn
         // This class is meant to be copied into other libraries. So we want to exclude it from Code Analysis rules
  	    // that might be in place in the target project.
         [GeneratedCode("reflection-utils", "1.0.0")]
-        [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_REFLECTION_UTILS_PUBLIC
         public
 #else
@@ -1565,6 +1559,18 @@ namespace IsThisOn
 
             public delegate TValue ThreadSafeDictionaryValueFactory<TKey, TValue>(TKey key);
 
+#if SIMPLE_JSON_TYPEINFO
+            public static TypeInfo GetTypeInfo(Type type)
+            {
+                return type.GetTypeInfo();
+            }
+#else
+            public static Type GetTypeInfo(Type type)
+            {
+                return type;
+            }
+#endif
+
             public static Attribute GetAttribute(MemberInfo info, Type type)
             {
 #if SIMPLE_JSON_TYPEINFO
@@ -1576,6 +1582,25 @@ namespace IsThisOn
                     return null;
                 return Attribute.GetCustomAttribute(info, type);
 #endif
+            }
+
+            public static Type GetGenericListElementType(Type type)
+            {
+                IEnumerable<Type> interfaces;
+#if SIMPLE_JSON_TYPEINFO
+                interfaces = type.GetTypeInfo().ImplementedInterfaces;
+#else
+                interfaces = type.GetInterfaces();
+#endif
+                foreach (Type implementedInterface in interfaces)
+                {
+                    if (IsTypeGeneric(implementedInterface) &&
+                        implementedInterface.GetGenericTypeDefinition() == typeof (IList<>))
+                    {
+                        return GetGenericTypeArguments(implementedInterface)[0];
+                    }
+                }
+                return GetGenericTypeArguments(type)[0];
             }
 
             public static Attribute GetAttribute(Type objectType, Type attributeType)
@@ -1601,13 +1626,14 @@ namespace IsThisOn
 #endif
             }
 
+            public static bool IsTypeGeneric(Type type)
+            {
+                return GetTypeInfo(type).IsGenericType;
+            }
+
             public static bool IsTypeGenericeCollectionInterface(Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
-                if (!type.GetTypeInfo().IsGenericType)
-#else
-                if (!type.IsGenericType)
-#endif
+                if (!IsTypeGeneric(type))
                     return false;
 
                 Type genericDefinition = type.GetGenericTypeDefinition();
@@ -1617,11 +1643,7 @@ namespace IsThisOn
 
             public static bool IsAssignableFrom(Type type1, Type type2)
             {
-#if SIMPLE_JSON_TYPEINFO
-                return type1.GetTypeInfo().IsAssignableFrom(type2.GetTypeInfo());
-#else
-                return type1.IsAssignableFrom(type2);
-#endif
+                return GetTypeInfo(type1).IsAssignableFrom(GetTypeInfo(type2));
             }
 
             public static bool IsTypeDictionary(Type type)
@@ -1629,29 +1651,20 @@ namespace IsThisOn
 #if SIMPLE_JSON_TYPEINFO
                 if (typeof(IDictionary<,>).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
                     return true;
-
-                if (!type.GetTypeInfo().IsGenericType)
-                    return false;
 #else
                 if (typeof(System.Collections.IDictionary).IsAssignableFrom(type))
                     return true;
-
-                if (!type.IsGenericType)
-                    return false;
 #endif
+                if (!GetTypeInfo(type).IsGenericType)
+                    return false;
+
                 Type genericDefinition = type.GetGenericTypeDefinition();
                 return genericDefinition == typeof(IDictionary<,>);
             }
 
             public static bool IsNullableType(Type type)
             {
-                return
-#if SIMPLE_JSON_TYPEINFO
- type.GetTypeInfo().IsGenericType
-#else
- type.IsGenericType
-#endif
- && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+                return GetTypeInfo(type).IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
             }
 
             public static object ToNullableType(object obj, Type nullableType)
@@ -1661,11 +1674,7 @@ namespace IsThisOn
 
             public static bool IsValueType(Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
-                return type.GetTypeInfo().IsValueType;
-#else
-                return type.IsValueType;
-#endif
+                return GetTypeInfo(type).IsValueType;
             }
 
             public static IEnumerable<ConstructorInfo> GetConstructors(Type type)
